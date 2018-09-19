@@ -2,7 +2,7 @@
 # Declare variables to be passed into your templates.
 
 istio:
-  enabled: false
+  enabled: true
   rbac:
     enabled: false
 network:
@@ -34,3 +34,11 @@ hpa:
       targetAverageUtilization: 70
 versions:
   enabled: false
+
+targetClusterNamespace: bookinfo
+targetCluster:
+  labelSelector:
+    matchLabels:
+      name: penguin 
+resourceSelector:
+  type: cpu

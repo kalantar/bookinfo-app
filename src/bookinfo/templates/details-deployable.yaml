@@ -13,5 +13,5 @@ spec:
   deployer:
     kind: helm
     helm:
-      chartURL: https://mycluster/helm-repo/details-0.1.0.tgz
+      chartURL: https://raw.githubusercontent.com/kalantar/bookinfo-app/master/helm-repo/details-0.1.0.tgz
       namespace: bookinfo
