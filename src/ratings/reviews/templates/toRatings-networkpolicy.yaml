@@ -1,0 +1,29 @@
+{{- if .Values.network.enforced }}
+apiVersion: extensions/v1beta1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Chart.Name }}-{{ .Values.RatingsLabel }}-egress
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    chart-use: once
+    app: {{ .Chart.Name }}
+spec:
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kube-system: ns
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          istio-system: ns
+  - to:
+    - podSelector:
+        matchLabels:
+          app: {{ .Values.RatingsLabel }}
+  podSelector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  policyTypes:
+  - Egress
+{{- end }}

@@ -1,0 +1,46 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Application
+metadata:
+  name: reviews
+  labels:
+    app: reviews
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: reviews
+    chart-use: once
+spec:
+  selector:
+    matchLabels:
+     app: reviews
+  componentKinds:
+    - group: mcm.ibm.com
+      kind: Application
+    - group: mcm.ibm.com
+      kind: ApplicationRelationship
+    - group: mcm.ibm.com
+      kind: Deployable
+    - group: mcm.ibm.com
+      kind: PlacementPolicy
+    - group: core
+      kind: ServiceAccount
+    - group: core
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: core
+      kind: Pod
+{{- if .Values.istio.enabled }}
+    - group: networking.istio.io
+      kind: Gateway
+    - group: networking.istio.io
+      kind: VirtualService
+{{- if .Values.istio.rbac.enabled }}
+    - group: rbac.istio.io
+      kind: ServiceRole
+    - group: rbac.istio.io
+      kind: ServiceRoleBinding
+{{- end }}
+{{- end }}
+    - group: networking
+      kind: NetworkPolicy

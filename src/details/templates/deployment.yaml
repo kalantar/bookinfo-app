@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: details
+  labels:
+    app: details
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: details
+    app: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  template:
+    metadata:
+      labels:
+        app: details
+        image: "{{ .Values.image.tag }}"
+    spec:
+      serviceAccountName: details-sa
+      containers:
+      - name: details
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.servicePort }}
+{{- if .Values.istio.enabled }}
+{{- else }}
+        readinessProbe:
+          httpGet:
+            path: /details/health
+            port: 9080
+          initialDelaySeconds: 20
+{{- end }}
+        resources:
+          requests:
+            cpu: "{{ .Values.image.resources.requests.cpu }}"
+            memory: "{{ .Values.image.resources.requests.memory }}"

@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ratings
+  labels:
+    app: ratings
+    chart: '{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}'
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: ratings
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  template:
+    metadata:
+      labels:
+        app: ratings
+        image: "{{ .Values.image.tag }}"
+    spec:
+      serviceAccountName: ratings-sa
+      containers:
+      - name: ratings
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.servicePort }}
+{{- if .Values.istio.enabled }}
+{{- else }}
+        readinessProbe:
+          httpGet:
+            path: /ratings/health
+            port: 9080
+          initialDelaySeconds: 20
+{{- end }}
+        resources:
+          requests:
+            cpu: "{{ .Values.image.resources.requests.cpu }}"
+            memory: "{{ .Values.image.resources.requests.memory }}"

@@ -1,0 +1,37 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+istio:
+  enabled: false
+  rbac:
+    enabled: false
+network:
+  enforced: false
+RatingsLabel: ratings
+
+replicaCount: 1
+revisionHistoryLimit: 1
+image:
+  repository: istio/examples-bookinfo-reviews-v1
+  tag: 1.5.0
+  pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 200m
+      memory: 300Mi
+service:
+  name: Node
+  type: ClusterIP
+  servicePort: 9080
+  servicePortHttps: 9443
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+    cpu:
+      targetAverageUtilization: 70
+    memory:
+      targetAverageUtilization: 70
+versions:
+  enabled: false

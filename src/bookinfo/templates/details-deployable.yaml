@@ -1,0 +1,17 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: Deployable
+metadata:
+  name: details
+  labels:
+    app: bookinfo
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: bookinfo
+    servicekind: ApplicationService
+spec:
+  deployer:
+    kind: helm
+    helm:
+      chartURL: https://mycluster/helm-repo/details-0.1.0.tgz
+      namespace: bookinfo

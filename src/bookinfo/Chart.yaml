@@ -1,0 +1,4 @@
+apiVersion: v1
+description: A Helm chart for the bookinfo application
+name: bookinfo
+version: 0.1.0
