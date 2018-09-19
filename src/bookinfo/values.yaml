@@ -14,7 +14,6 @@ targetClusterNamespace: bookinfo
 targetCluster:
   labelSelector:
     matchLabels:
-      name: owl
-resourceSelector:
-  type: cpu
-
+      name: penguin
+  resourceSelector:
+    type: cpu

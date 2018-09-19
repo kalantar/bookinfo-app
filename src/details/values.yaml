@@ -39,7 +39,7 @@ targetClusterNamespace: bookinfo
 targetCluster:
   labelSelector:
     matchLabels:
-      name: owl
+      name: penguin
 resourceSelector:
   type: cpu
 

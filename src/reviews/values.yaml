@@ -7,7 +7,6 @@ istio:
     enabled: false
 network:
   enforced: false
-RatingsLabel: ratings
 
 replicaCount: 1
 revisionHistoryLimit: 1
@@ -40,7 +39,7 @@ targetClusterNamespace: bookinfo
 targetCluster:
   labelSelector:
     matchLabels:
-      name: penguin
-resourceSelector:
-  type: cpu
+      name: "penguin"
+  resourceSelector:
+    type: cpu
 

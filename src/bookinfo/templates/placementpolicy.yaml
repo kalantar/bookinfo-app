@@ -13,6 +13,6 @@ spec:
   replicas: {{ .Values.replicaCount }}  
   clusterSelector:
     matchLabels:
-{[ toYaml .Values.targetCluster.labelSelector.matchLabels | indent 6 }}
+{{ toYaml .Values.targetCluster.labelSelector.matchLabels | indent 6 }}
   resourceSelector:
 {{ toYaml .Values.targetCluster.resourceSelector | indent 4 }}
