@@ -3,18 +3,16 @@
 apiVersion: multicluster.istio.io/v1alpha1
 kind: ServiceExpositionPolicy
 metadata:
-  name: reviews-v1
+  name: ratings
   labels:
-    app: reviews
+    app: ratings
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    name: reviews
+    name: ratings
 spec:
   exposed:
-  - name: reviews-v1
+  - name: ratings
     port: 9080
-    alias: reviews-v1
-    subset: v1
 {{- end }}
 {{- end }}
