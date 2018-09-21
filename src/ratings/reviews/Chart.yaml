@@ -1,4 +1,0 @@
-apiVersion: v1
-description: A Helm chart for the bookinfo reviews microservice
-name: reviews
-version: 1.0.0
