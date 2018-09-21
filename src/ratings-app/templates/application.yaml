@@ -10,8 +10,11 @@ metadata:
     name: ratings
 spec:
   selector:
-    matchLabels:
-      app: ratings
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+        - ratings
   componentKinds:
   - group: core
     kind: Pod

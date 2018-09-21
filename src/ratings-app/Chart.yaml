@@ -1,4 +1,4 @@
 apiVersion: v1
-description: A Helm chart for the bookinfo ratings microservice
+description: A Helm chart for the bookinfo ratings microservice application definition
 name: ratings-app
 version: 0.1.0
