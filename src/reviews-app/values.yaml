@@ -1,6 +1,15 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+istio:
+  enabled: true
+  rbac:
+    enabled: false
+  multicluster:
+    enabled: false
+network:
+  enforced: false
+
 replicaCount: 1
 
 targetClusterNamespace: bookinfo
