@@ -4,10 +4,10 @@
 replicaCount: 1
 
 targetClusterNamespace: bookinfo
-
 targetCluster:
   labelSelector:
     matchLabels:
       name: "owl"
   resourceSelector:
     type: cpu
+
