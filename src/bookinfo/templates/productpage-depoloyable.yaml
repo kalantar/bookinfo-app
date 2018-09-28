@@ -14,4 +14,4 @@ spec:
     kind: helm
     helm:
       chartURL: https://raw.githubusercontent.com/kalantar/bookinfo-app/master/helm-repo/productpage-0.1.0.tgz
-      namespace: bookinfo
+      namespace: {{ .Values.targetClusterNamespace }}

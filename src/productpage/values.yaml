@@ -34,12 +34,3 @@ hpa:
       targetAverageUtilization: 70
 versions:
   enabled: false
-
-targetClusterNamespace: bookinfo
-targetCluster:
-  labelSelector:
-    matchLabels:
-      name: penguin
-resourceSelector:
-  type: cpu
-
