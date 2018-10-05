@@ -9,6 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
     name: details
     servicekind: ApplicationService
+    placementPolicy: productpage
 spec:
   deployer:
     kind: helm
