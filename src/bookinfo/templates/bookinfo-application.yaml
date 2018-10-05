@@ -8,14 +8,15 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
     name: bookinfo
-  spec:
-    selector:
-      matchExpressions:
+spec:
+  selector:
+    matchExpressions:
       - key: app
         operator: In
         values:
+        - bookinfo
         - productpage
         - details
   componentKinds:
   - group: core
-    kind: Pod
+    kind: Pods

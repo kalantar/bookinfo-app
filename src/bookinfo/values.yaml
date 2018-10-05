@@ -5,6 +5,8 @@ istio:
   enabled: true
   rbac:
     enabled: false
+  multicluster:
+    enabled: false
 network:
   enforced: false
 
@@ -14,6 +16,6 @@ targetClusterNamespace: bookinfo
 targetCluster:
   labelSelector:
     matchLabels:
-      name: owl
+      name: "owl"
   resourceSelector:
     type: cpu

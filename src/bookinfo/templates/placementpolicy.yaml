@@ -1,13 +1,13 @@
 apiVersion: mcm.ibm.com/v1alpha1
 kind: PlacementPolicy
 metadata:
-  name: bookinfo
+  name: productpage
   labels:
-    app: bookinfo
+    app: productpage
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-    name: bookinfo
+    name: productpage
     servicekind: CacheService
 spec:
   replicas: {{ .Values.replicaCount }}  

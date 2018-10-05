@@ -8,7 +8,6 @@ metadata:
       release: {{ .Release.Name }}
       heritage: {{ .Release.Service }}
       name: reviews-to-ratings
-      chart-use: once
 spec:
   type: usesExisting
   source: 
