@@ -18,7 +18,9 @@ spec:
         app: productpage
         image: "{{ .Values.image.tag }}"
     spec:
-      serviceAccountName: productpage-sa
+{{- if .Values.istio.rbac.enabled }}
+    serviceAccountName: productpage-sa
+{{- end }}
       containers:
       - name: productpage
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

@@ -17,7 +17,9 @@ spec:
         app: ratings
         image: "{{ .Values.image.tag }}"
     spec:
+{{- if .Values.istio.rbac.enabled }}
       serviceAccountName: ratings-sa
+{{- end }}
       containers:
       - name: ratings
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

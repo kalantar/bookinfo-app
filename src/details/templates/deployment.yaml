@@ -18,7 +18,9 @@ spec:
         app: details
         image: "{{ .Values.image.tag }}"
     spec:
+{{- if .Values.istio.rbac.enabled }}
       serviceAccountName: details-sa
+{{- end }}
       containers:
       - name: details
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
