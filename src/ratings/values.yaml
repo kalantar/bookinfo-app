@@ -6,7 +6,7 @@ istio:
   rbac:
     enabled: false
   multicluster:
-    enabled: false
+    enabled: true
 network:
   enforced: false
 

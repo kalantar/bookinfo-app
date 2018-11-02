@@ -12,7 +12,7 @@ network:
 
 replicaCount: 1
 
-targetClusterNamespace: bookinfo
+targetClusterNamespace: default
 targetCluster:
   labelSelector:
     matchLabels:
