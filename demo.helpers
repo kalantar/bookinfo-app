@@ -14,7 +14,7 @@ function demo_expose {
   local __service="${1}"
   local __cluster="${2}"
 
-cat <<EOF | kubectl --context ${__cluster} -n $SERVICE_NAMESPACE apply -f -
+cat <<EOF | kubectl --context ${__cluster} -n default apply -f -
 apiVersion: multicluster.istio.io/v1alpha1
 kind: ServiceExpositionPolicy
 metadata:

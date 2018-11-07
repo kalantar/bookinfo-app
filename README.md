@@ -9,35 +9,36 @@ The second [as_three_applications](as_three_applications) breaks bookinfo into t
 ## Requirements
 Two or more ICP clusters, one hosting MCM hub and at least 2 managed clusters. Set up istio multimesh as per instructions [here](https://github.com/istio-ecosystem/wharf-multicluster-sync/tree/master/docs/install).
 
-## Run the "One Application Demo"
+Define environment variables
+1. `MCM_HUB` - kubernetes context for MCM hub cluster
+2. `CLUSTER1` - kubernetes context for first managed cluster
+3. `CLUSTER2` - kubernetes context for second managed cluster
+
+Define demo tools:
+
+    source demo.helpers
+
+## _One Application Version_
 Deploy bookinfo and configure the istio ingress gateway to enable external access:
 
     helm --kube-context $CLUSTER1 install -n bookinfo as_one_application/src/bookinfo --tls 
     helm --kube-context $CLUSTER1 install -n bookinfo-gateway src/expose-productpage --tls
 
-Define demo tools:
-
-    source demo.helpers
-
 Verify access via curl or a browser:
 
     curl $(demo_url)
 
-## Run the "Three Application Demo"
+## _Three Application Version_
 Deploy bookinfo and configure the istio ingress gateway to enable external access:
 
     as_three_applications/deploy.sh $CLUSTER1 
     helm --kube-context $CLUSTER1 install -n bookinfo-gateway src/expose-productpage --tls
 
-Define demo tools:
-
-    source demo.helpers
-
 Verify access via curl or a browser:
 
     curl $(demo_url)
 
-## Run demo scenarios
+## Runnung demo scenarios
 ### Scenario 1: Move _ratings_ from $CLUSTER1 to $CLUSTER2
 
     # move ratings service by patching placement policy
