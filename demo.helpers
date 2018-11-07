@@ -1,0 +1,69 @@
+# Usage: demo_move service cluster
+# Move service to cluster
+function demo_move {
+  local __service="${1}"
+  local __cluster="${2}"
+
+  kubectl --context $MCM_HUB patch placementpolicy ${__service} -p \
+     "{\"spec\":{\"clusterSelector\":{\"matchLabels\":{\"name\":\"$__cluster\"}}}}"
+}
+
+# Usage: demo_expose service cluster
+# Create ServiceExpositionPolicy on cluster for service
+function demo_expose {
+  local __service="${1}"
+  local __cluster="${2}"
+
+cat <<EOF | kubectl --context ${__cluster} -n $SERVICE_NAMESPACE apply -f -
+apiVersion: multicluster.istio.io/v1alpha1
+kind: ServiceExpositionPolicy
+metadata:
+  name: ${__service}
+  labels:
+    app: ${__service}
+    name: ${__service}
+spec:
+  exposed:
+  - name: ${__service}
+    port: 9080
+EOF
+}
+
+# Usage: demo_hide service cluster
+# Stop exposing service on cluster
+function demo_hide {
+  local __service="${1}"
+  local __cluster="${2}"
+
+  kubectl --context ${__cluster} delete serviceexpositionpolicy ${__service}
+}
+
+
+# Usage: demo_show_placement
+# Show placement decisions
+function demo_show_placement {
+  kubectl --context $MCM_HUB get placementpolicy
+}
+
+# Usage: demo_inspect service cluster
+# Display resources related to service on cluster
+function demo_inspect {
+  local __cluster="${1}"
+  shift
+  
+  for __service in $@; do
+    echo ">>>> ${__service} on ${__cluster}"
+    kubectl --context ${__cluster} get --all-namespaces \
+       deploy,serviceexpositionpolicy,remoteservicebinding,gateway,virtualservice,service,destinationrule,serviceentry \
+      | grep ${__service}
+  done
+}
+
+# Usage: demo_url
+# Display the URL of productpage
+function demo_url {
+  proxy_node=$(kubectl --context $CLUSTER1 get nodes | grep proxy | awk '{print $1}')
+  ingress_port=$(kubectl --context $CLUSTER1 get svc istio-ingressgateway -n istio-system -o json | jq '.spec.ports[] | select(.port==80).nodePort')
+  url="http://${proxy_node}:${ingress_port}/productpage"
+  echo $url
+}

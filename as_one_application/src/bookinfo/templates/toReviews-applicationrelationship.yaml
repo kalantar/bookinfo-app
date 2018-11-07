@@ -1,0 +1,18 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: ApplicationRelationship
+metadata:
+  name: productpage-to-reviews
+  labels:
+    app: bookinfo
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: productpage-to-reviews
+spec:
+  destination:
+    kind: Deployable
+    name: reviews
+  source:
+    kind: Deployable
+    name: productpage
+  type: usesExisting
