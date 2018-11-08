@@ -38,7 +38,7 @@ Verify access via curl or a browser:
 
     curl $(demo_url)
 
-## Runnung demo scenarios
+## Running demo scenarios
 ### Scenario 1: Move _ratings_ from $CLUSTER1 to $CLUSTER2
 
     # move ratings service by patching placement policy
