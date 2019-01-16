@@ -1,0 +1,18 @@
+apiVersion: mcm.ibm.com/v1alpha1
+kind: PlacementPolicy
+metadata:
+  name: ratings
+  labels:
+    app: ratings
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    name: ratings
+    servicekind: CacheService
+spec:
+  clusterReplicas: {{ .Values.replicaCount }}  
+  clusterLabels:
+    matchLabels:
+{{ toYaml .Values.targetCluster.labelSelector.matchLabels | indent 6 }}
+  resourceHints:
+{{ toYaml .Values.targetCluster.resourceSelector | indent 4 }}
