@@ -80,8 +80,9 @@ if [ "${status}" == "True" ]; then
 fi
 
 # Determine when the pipeline was started
-start=$(kubectl get pipelinerun ${PIPELINERUN} -o jsonpath='{.status.startTime}')
-startS=$(TZ=/usr/share/UTC date -j -f "%FT%TZ" "$start" +%s)
+start=$(kubectl get pipelinerun ${PIPELINERUN} -o jsonpath='{.status.startTime}' | sed 's/T/ /' | sed 's/Z$//')
+startS=$(TZ=/usr/share/UTC date -d "$start" +%s)
+#mac startS=$(TZ=/usr/share/UTC date -j -f "%F %T" "$start" +%s)
 
 timePassedS=$(( $(date +%s) - $startS ))
 while (( timePassedS < ${DURATION} )); do
