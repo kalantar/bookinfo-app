@@ -25,6 +25,7 @@ while [ $# -gt 0 ]; do
       shift; shift
       ;;
     *) echo "WARNING: Ignoring unknown option: ${1}"
+      shift
       ;;
   esac
 done

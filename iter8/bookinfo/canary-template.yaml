@@ -15,7 +15,7 @@ spec:
     interval: 30s
     stepSize: 20
     iterationCount: 8 #default value = 100
-    maxTrafficPercent: 99 #default value = 50
+    maxTrafficPercent: 100 #default value = 50
   analysis:
     analyticsService: "http://localhost:5555"
     metrics:
