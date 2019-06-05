@@ -38,10 +38,11 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-echo "URL       = $URL"
-echo "OPTIONS   = $OPTIONS"
-echo "DURATION  = $DURATION"
+echo "      URL = $URL"
+echo "  OPTIONS = $OPTIONS"
+echo " DURATION = $DURATION"
 echo "FREQUENCY = $FREQUENCY"
+echo "STOP_FILE = $STOP_FILE"
 
 # validate input
 if [ -z $URL ]; then
@@ -52,7 +53,8 @@ fi
 COUNT=0
 startS=$(date +%s)
 timePassedS=$(( $(date +%s) - $startS ))
-while (( $timePassedS < $DURATION )) && [ ! -f ${STOP_FILE} ]; do
+while (( $timePassedS < $DURATION )); do
+  if [ -f ${STOP_FILE} ]; then break; fi
   sleep ${FREQUENCY}
 
   curl $OPTIONS $URL > /dev/null
