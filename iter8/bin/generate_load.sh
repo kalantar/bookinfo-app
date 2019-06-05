@@ -58,9 +58,9 @@ while [ $timePassedS -lt $DURATION ]; do
   sleep ${FREQUENCY}
 
   curl $OPTIONS $URL > /dev/null
-  (( COUNT++ ))
+  COUNT=$(( $COUNT + 1 ))
 
   timePassedS=$(( $(date +%s) - $startS ))
 done
 
-echo "Sent $COUNT queries over ${timePassedS}s"
+echo "Sent ${COUNT} queries over ${timePassedS}s"
