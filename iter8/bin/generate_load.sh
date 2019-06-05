@@ -1,14 +1,18 @@
 #!/bin/sh
 
+# for debug
+#set -x
+
 FREQUENCY=2
 OPTIONS="-Is"
-DURATION="10s"
+DURATION="10"
 URL=
+STOP_FILE=
 
 # process options
 while [ $# -gt 0 ]; do
   case "${1}" in
-    --url)
+    -u|--url)
       URL="${2}"
       shift; shift
       ;;
@@ -24,6 +28,10 @@ while [ $# -gt 0 ]; do
       OPTIONS="${2}"
       shift; shift
       ;;
+    -s|--stop-file)
+      STOP_FILE="${2}"
+      shift; shift
+      ;;
     *) echo "WARNING: Ignoring unknown option: ${1}"
       shift
       ;;
@@ -35,12 +43,22 @@ echo "OPTIONS   = $OPTIONS"
 echo "DURATION  = $DURATION"
 echo "FREQUENCY = $FREQUENCY"
 
-generate {
-  while sleep $FREQUENCY ; do
-    curl $OPTIONS $URL
-  done
-}
+# validate input
+if [[ -z $URL ]]; then
+  echo "url to test for liveess required"
+  exit 1
+fi
 
-#timeout $DURATION generate
-#timeout $DURATION while sleep $FREQUENCY ; do curl $OPTIONS $URL ; done
-while sleep $FREQUENCY ; do curl $OPTIONS $URL ; done
+COUNT=0
+startS=$(date +%s)
+timePassedS=$(( $(date +%s) - $startS ))
+while (( timePassedS < ${DURATION} )) && [[ ! -f ${STOP_FILE} ]]; do
+  sleep ${FREQUENCY}
+
+  curl $OPTIONS $URL > /dev/null
+  (( COUNT++ ))
+
+  timePassedS=$(( $(date +%s) - $startS ))
+done
+
+echo "Sent $COUNT queries over ${timePassedS}s"
