@@ -53,7 +53,7 @@ fi
 COUNT=0
 startS=$(date +%s)
 timePassedS=$(( $(date +%s) - $startS ))
-while (( $timePassedS < $DURATION )); do
+while (( $timePassedS <= $DURATION )); do
   if [ -f ${STOP_FILE} ]; then break; fi
   sleep ${FREQUENCY}
 
