@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # for debug
 set -x
@@ -14,6 +14,8 @@ while [ $# -gt 0 ]; do
   case "${1}" in
     -i|--experiment-id)
       EXPERIMENT_ID="${2}"
+      shift; shift
+      ;;
     -d|--duration)
       DURATION="${2}"
       shift; shift
@@ -70,7 +72,7 @@ kill_pipelinerun() {
 ##fi
 eStatus=$(get_experiment_status)
 status=${eStatus:-"False"} # experiment might not have started
-if [ "${status}" == "True" ]; then
+if [[ "${status}" == "True" ]]; then
   # experiment is done; make sure load generation is terminated and exit
   generate_load_status=$(get_generateload_status)
   if [ "${generate_load_status}" == "Unknown" ]; then
