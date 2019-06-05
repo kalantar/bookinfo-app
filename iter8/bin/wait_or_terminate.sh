@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # for debug
-set -x
+# set -x
 
 EXPERIMENT_ID=${BUILD}
 EXPERIMENT_TEMPLATE=
@@ -28,6 +28,10 @@ while [ $# -gt 0 ]; do
       NAMESPACE="${2}"
       shift; shift
       ;;
+    -s|--stop-file)
+      STOP_FILE="${2}"
+      shift; shift
+      ;;
     *) EXPERIMENT_TEMPLATE="${1}"
       shift
       ;;
@@ -40,6 +44,7 @@ echo "EXPERIMENT_TEMPLATE = $EXPERIMENT_TEMPLATE"
 echo "          NAMESPACE = $NAMESPACE"
 echo "           DURATION = $DURATION"
 echo "          FREQUENCY = $FREQUENCY"
+echo "          STOP_FILE = $STOP_FILE"
 
 # validate input
 # compute values
@@ -66,17 +71,14 @@ kill_pipelinerun() {
 }
 
 # If we have already completed; just exit
-##status=$(get_generateload_status)
-##if [[ $status == False ]] || [[ $status == True ]]; then
-##  exit 0
-##fi
 eStatus=$(get_experiment_status)
 status=${eStatus:-"False"} # experiment might not have started
 if [[ "${status}" == "True" ]]; then
   # experiment is done; make sure load generation is terminated and exit
   generate_load_status=$(get_generateload_status)
   if [ "${generate_load_status}" == "Unknown" ]; then
-    kill_pipelinerun
+    touch ${STOP_FILE}
+    # kill_pipelinerun
   fi
   exit 0
 fi
@@ -90,17 +92,14 @@ timePassedS=$(( $(date +%s) - $startS ))
 while (( timePassedS < ${DURATION} )); do
   sleep ${FREQUENCY}
 
-##  status=$(get_piperlinerunstatus)
-##  if [[ $status == False ]] || [[ $status == True ]]; then
-##    exit 0
-##  fi
 eStatus=$(get_experiment_status)
 status=${eStatus:-"False"} # experiment might not have started
 if [[ "${status}" == "True" ]]; then
   # experiment is done; make sure load generation is terminated and exit
   generate_load_status=$(get_generateload_status)
   if [[ "${generate_load_status}" == "Unknown" ]]; then
-    kill_pipelinerun
+    touch ${STOP_FILE}
+    # kill_pipelinerun
   fi
   exit 0
 fi
@@ -111,5 +110,6 @@ done
 # We've waited ${DURATION} for the experiment to complete
 # It hasn't, so we kill the experiment and the load-generation
 kubectl --namespace ${NAMESPACE} delete canary $EXPERIMENT --ignore-not-found
-kill_pipelinerun # should have no effect on terminated pipeline
+touch ${STOP_FILE}
+# kill_pipelinerun # should have no effect on terminated pipeline
 exit 1
