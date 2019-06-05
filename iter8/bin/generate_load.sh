@@ -52,7 +52,7 @@ fi
 COUNT=0
 startS=$(date +%s)
 timePassedS=$(( $(date +%s) - $startS ))
-while (( timePassedS < ${DURATION} )) && [[ ! -f ${STOP_FILE} ]]; do
+while (( timePassedS < ${DURATION} )) && [ ! -f ${STOP_FILE} ]; do
   sleep ${FREQUENCY}
 
   curl $OPTIONS $URL > /dev/null
