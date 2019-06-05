@@ -44,8 +44,8 @@ echo "DURATION  = $DURATION"
 echo "FREQUENCY = $FREQUENCY"
 
 # validate input
-if [[ -z $URL ]]; then
-  echo "url to test for liveess required"
+if [ -z $URL ]; then
+  echo "url to test for liveness required"
   exit 1
 fi
 
