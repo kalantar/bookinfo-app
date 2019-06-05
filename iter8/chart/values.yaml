@@ -1,0 +1,6 @@
+Name: reviews
+
+image:
+  repository: kalantar
+  name: examples-bookinfo-reviews
+  tag: v1
