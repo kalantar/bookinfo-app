@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # for debug
-#set -x
+set -x
 
 FREQUENCY=2
 OPTIONS="-Is"
