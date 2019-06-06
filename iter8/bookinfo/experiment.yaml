@@ -1,5 +1,5 @@
 apiVersion: iter8.ibm.com/v1alpha1
-kind: Canary
+kind: Experiment 
 metadata:
   name: reviews
   labels:
@@ -9,17 +9,17 @@ spec:
     name: reviews
     apiVersion: v1 
     baseline: reviews-v1
-    canary: reviews-v2
+    candidate: reviews-v2
   trafficControl:
     strategy: check_and_increment
     interval: 30s
-    stepSize: 20
-    iterationCount: 8 #default value = 100
-    maxTrafficPercent: 100 #default value = 50
+    trafficStepSize: 20
+    maxIterations: 8 #default value = 100
+    maxTrafficPercentage: 80 #default value = 50
   analysis:
     analyticsService: "http://localhost:5555"
     metrics:
       - name: iter8_latency
-        type: threshold
-        value: 0.2
-        sampleSize: 10
+        toleranceType: threshold
+        tolerance: 0.2
+        sampleSize: 6
