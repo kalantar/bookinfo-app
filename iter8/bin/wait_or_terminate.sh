@@ -60,14 +60,8 @@ get_generateload_status() {
 
 get_experiment_status() {
   kubectl --namespace ${NAMESPACE} \
-    get canary ${EXPERIMENT} \
+    get experiment ${EXPERIMENT} \
     -o jsonpath='{.status.conditions[?(@.type=="ExperimentCompleted")].status}'
-}
-
-kill_pipelinerun() {
-  kubectl patch pipelinerun ${PIPELINERUN} \
-  --type=json \
-  -p='[{"op": "add", "path": "/spec/status", "value": "PipelineRunCancelled"}]'
 }
 
 # If we have already completed; just exit
@@ -78,7 +72,6 @@ if [[ "${status}" == "True" ]]; then
   generate_load_status=$(get_generateload_status)
   if [ "${generate_load_status}" == "Unknown" ]; then
     touch ${STOP_FILE}
-    # kill_pipelinerun
   fi
   exit 0
 fi
@@ -99,7 +92,6 @@ if [[ "${status}" == "True" ]]; then
   generate_load_status=$(get_generateload_status)
   if [[ "${generate_load_status}" == "Unknown" ]]; then
     touch ${STOP_FILE}
-    # kill_pipelinerun
   fi
   exit 0
 fi
@@ -109,7 +101,6 @@ done
 
 # We've waited ${DURATION} for the experiment to complete
 # It hasn't, so we kill the experiment and the load-generation
-kubectl --namespace ${NAMESPACE} delete canary $EXPERIMENT --ignore-not-found
+kubectl --namespace ${NAMESPACE} delete experiment $EXPERIMENT --ignore-not-found
 touch ${STOP_FILE}
-# kill_pipelinerun # should have no effect on terminated pipeline
 exit 1
